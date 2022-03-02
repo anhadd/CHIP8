@@ -159,7 +159,7 @@ void CHIP8::executeCycle() {
                     break;
                 case 0x0007:
                     // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there is not.
-                    if ((uint8_t)V[(curr_op & 0x0F00) >> 8] <= (uint8_t)V[(curr_op & 0x00F0) >> 4]) {
+                    if (V[(curr_op & 0x0F00) >> 8] <= V[(curr_op & 0x00F0) >> 4]) {
                         V[15] = 1;
                     }
                     else {
@@ -259,7 +259,6 @@ void CHIP8::executeCycle() {
                 case 0x000A:
                     // A key press is awaited, and then stored in VX.
                     for (int i = 0; i < 16; i++) {
-                        // cout << "KEY " << i << " : " << keys[i] << endl;
                         if (keys[i] == 1) {
                             V[(curr_op & 0x0F00) >> 8] = i;
                             break;
