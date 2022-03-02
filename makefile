@@ -14,3 +14,4 @@ main: $(OBJECTS)
 
 clean:
 	rm -f *.o chip8
+	rm -f main chip8
