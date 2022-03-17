@@ -12,6 +12,9 @@
 #include <iostream>
 #include <fstream>
 
+#include <thread>
+#include <vector>
+
 using namespace std;
 
 
@@ -38,17 +41,17 @@ const unsigned char fontset[16*5] = {
 class CHIP8 {
 public:
 	uint16_t curr_op;				// Stores the current operation.
-	char x;
-    char y;
-	char h;
+	uint8_t x;
+    uint8_t y;
+	uint8_t h;
     bool toggled;
 	bool incrementPC;
 	bool drawFlag;
 
-    unsigned char memory[4096];     			// 4096 bytes of memory.
+    uint8_t memory[4096];     		// 4096 bytes of memory.
     uint16_t stack[16];        		// 16 16-bit registers used to store return pointers.
     
-    char V[16];                		// 16 8-bit registers of size. 
+    uint8_t V[16];                	// 16 8-bit registers. 
                             		// VF (V[16]) should no be used by the program since it is used as a flag.
 	bool keys[16];					// Used for the 16 keys that CHIP-8 has (1-9 A-F).
 	bool display[64][32];			// The display of CHIP-8 (64x32).
@@ -65,7 +68,7 @@ public:
 
     CHIP8();
 	void executeCycle();
-	void loadRom(const char* romName);
+	int loadRom(const char* romName);
 };
 
 #endif

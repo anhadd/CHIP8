@@ -1,17 +1,11 @@
 CC = g++
 CFLAGS = -lSDL2
 DEPS = /include/*
-OBJECTS = chip8.o main.o
+OBJECTS = /src/chip8.o /src/input.o /src/GUI.o /src/main.o
 
 
-all: main
-
-main: $(OBJECTS)
-	$(CC) -o $@ $^ $(CFLAGS)
-
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+all: 
+	+$(MAKE) -C src
 
 clean:
-	rm -f *.o chip8
-	rm -f main chip8
+	+$(MAKE) clean -C src

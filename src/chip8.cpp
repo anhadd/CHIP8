@@ -1,10 +1,5 @@
-#include <iostream>
-#include "include/chip8.h"
+#include "../include/chip8.h"
 
-#include <thread>
-#include <vector>
-
-using namespace std;
 
 
 CHIP8::CHIP8() {
@@ -38,8 +33,6 @@ CHIP8::CHIP8() {
     for (int i = 0; i < 5*16; i++) {
         memory[font_addr+i] = fontset[i];
     }
-
-    cout << "Created new \n";
 }
 
 
@@ -139,22 +132,18 @@ void CHIP8::executeCycle() {
                     V[(curr_op & 0x0F00) >> 8] += V[(curr_op & 0x00F0) >> 4];
                     break;
                 case 0x0005:
-                    // cout << (int)V[(curr_op & 0x0F00) >> 8] << endl;
-                    // cout << (int)V[(curr_op & 0x00F0) >> 4] << endl;
                     // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there is not.
                     if ((uint8_t)V[(curr_op & 0x0F00) >> 8] >= (uint8_t)V[(curr_op & 0x00F0) >> 4]) {
                         V[15] = 1;
                     }
                     else {
-                        // cout << "BORROW\n";
                         V[15] = 0;
                     }
                     V[(curr_op & 0x0F00) >> 8] -= V[(curr_op & 0x00F0) >> 4];
-                    // cout << (int)V[(curr_op & 0x0F00) >> 8] << endl;
                     break;
                 case 0x0006:
                     // Stores the least significant bit of VX in VF and then shifts VX to the right by 1.
-                    V[15] = V[(curr_op & 0x0F00) >> 8] & 0b0000000000000001u;
+                    V[15] = V[(curr_op & 0x0F00) >> 8] & 0b00000001u;
                     V[(curr_op & 0x0F00) >> 8] = (uint8_t)((V[(curr_op & 0x0F00) >> 8] & 0xFF) >> 1);
                     break;
                 case 0x0007:
@@ -169,7 +158,7 @@ void CHIP8::executeCycle() {
                     break;
                 case 0x000E:
                     // Stores the most significant bit of VX in VF and then shifts VX to the left by 1.
-                    V[15] = (V[(curr_op & 0x0F00) >> 8] & 0b1000000000000000u) >> 15;
+                    V[15] = (V[(curr_op & 0x0F00) >> 8] & 0b10000000u) >> 15;
                     V[(curr_op & 0x0F00) >> 8] = (uint8_t)((V[(curr_op & 0x0F00) >> 8] & 0xFF) << 1);
                     break;
                 default:
@@ -342,13 +331,19 @@ void CHIP8::executeCycle() {
 }
 
 
-void CHIP8::loadRom(const char* romName) {
+int CHIP8::loadRom(const char* romName) {
     ifstream romFile(romName, ios::in | ios::binary);
     int i = 0;
     unsigned char curr_char = 0;
 
     vector<char> prog((istreambuf_iterator<char>(romFile)), istreambuf_iterator<char>());
+
+    if (romFile.fail()) {
+        return -1;
+    }
+
     copy(prog.begin(), prog.end(), &memory[rom_addr]);
 
     romFile.close();
+    return 0;
 }
