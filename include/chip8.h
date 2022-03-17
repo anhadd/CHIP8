@@ -39,36 +39,39 @@ const unsigned char fontset[16*5] = {
 
 
 class CHIP8 {
-public:
-	uint16_t curr_op;				// Stores the current operation.
-	uint8_t x;
-    uint8_t y;
-	uint8_t h;
-    bool toggled;
-	bool incrementPC;
-	bool drawFlag;
+	public:
+		bool drawFlag;
 
-    uint8_t memory[4096];     		// 4096 bytes of memory.
-    uint16_t stack[16];        		// 16 16-bit registers used to store return pointers.
-    
-    uint8_t V[16];                	// 16 8-bit registers. 
-                            		// VF (V[16]) should no be used by the program since it is used as a flag.
-	bool keys[16];					// Used for the 16 keys that CHIP-8 has (1-9 A-F).
-	bool display[64][32];			// The display of CHIP-8 (64x32).
+		bool display[64][32];			// The display of CHIP-8 (64x32).
+		bool keys[16];					// Used for the 16 keys that CHIP-8 has (1-9 A-F).
 
-    uint16_t I;             		// 16-bit register used to store memory addresses.
-    uint8_t delay_timer;    		// 8-bit register. Decremented at 60 Hz.
-    uint8_t sound_timer;    		// 8-bit register. Decremented at 60 Hz.
+		CHIP8();
+		void executeCycle(bool &play_sound);
+		int loadRom(const char* romName);
 
-    uint16_t PC;            		// 16-bit program counter.
-    uint8_t SP;             		// 16-bit stack pointer.
+	private:
+		uint16_t curr_op;				// Stores the current operation.
+		uint8_t x;
+		uint8_t y;
+		uint8_t h;
+		bool toggled;
+		bool incrementPC;
 
-	uint16_t font_addr;				// Address of the start of the fonts.
-	uint16_t rom_addr;				// Address of the start of the rom.
+		uint8_t memory[4096];     		// 4096 bytes of memory.
+		uint16_t stack[16];        		// 16 16-bit registers used to store return pointers.
+		
+		uint8_t V[16];                	// 16 8-bit registers. 
+										// VF (V[16]) should no be used by the program since it is used as a flag.
 
-    CHIP8();
-	void executeCycle();
-	int loadRom(const char* romName);
+		uint16_t I;             		// 16-bit register used to store memory addresses.
+		uint8_t delay_timer;    		// 8-bit register. Decremented at 60 Hz.
+		uint8_t sound_timer;    		// 8-bit register. Decremented at 60 Hz.
+
+		uint16_t PC;            		// 16-bit program counter.
+		uint8_t SP;             		// 16-bit stack pointer.
+
+		uint16_t font_addr;				// Address of the start of the fonts.
+		uint16_t rom_addr;				// Address of the start of the rom.
 };
 
 #endif

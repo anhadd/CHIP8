@@ -36,7 +36,7 @@ CHIP8::CHIP8() {
 }
 
 
-void CHIP8::executeCycle() {
+void CHIP8::executeCycle(bool &play_sound) {
     // Gets the current operation.
     incrementPC = true;
     curr_op = (memory[PC] << 8) | memory[(PC) + 1];
@@ -321,8 +321,13 @@ void CHIP8::executeCycle() {
     if (delay_timer > 0) {
         delay_timer -= 1;
     }
+    
     if (sound_timer > 0) {
         sound_timer -= 1;
+        play_sound = true;
+    }
+    else {
+        play_sound = false;
     }
 
     if (incrementPC) {

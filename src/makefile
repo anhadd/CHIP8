@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -lSDL2
 DEPS = /include/*
-OBJECTS = chip8.o input.o GUI.o main.o
+OBJECTS = chip8.o input.o GUI.o SFX.o main.o
 
 
 all: ../main
