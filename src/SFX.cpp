@@ -3,7 +3,7 @@
 
 SFX::SFX() {
     // Constructor
-	SDL_LoadWAV(SFX_PATH, &spec, &buffer, &length);
+    SDL_LoadWAV(SFX_PATH, &spec, &buffer, &length);
     device = SDL_OpenAudioDevice(NULL, 0, &spec, NULL, 0);
 }
 
